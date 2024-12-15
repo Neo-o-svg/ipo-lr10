@@ -31,53 +31,23 @@ with open("data.json", "w", encoding='utf-8') as file:
 with open("data.json", "r", encoding="utf-8") as file:
     data = json.load(file)
 
-html_markup = """
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./css/style.css">
-  <title>Quotes to Scrape</title>
-</head>
-<body>
-  <div class="container">
-    <div class="table">
-      <h1 class="table_title">
-        Quotes to Scrape
-      </h1>
-      <div class="table_inner">
-        <table>
-          <thead>
-            <tr>
-              <th>The Quote</th>
-              <th>The author</th>
-            </tr>
-          </thead>
-          <tbody class="table_body">
-"""
+with open("index.html", "r", encoding="utf-8") as file:
+    soup = BeautifulSoup(file, "html.parser")
 
+tbody = soup.find('tbody', class_='table_body')
 for author, quote in data.items():
-    html_markup += f"""
-          <tr>
-            <td>{author}</td>
-            <td>{quote}</td>
-          </tr>
-    """
 
-html_markup += """
- </tbody>
-        </table>
-      </div>
-      <div class="link-box">
-        <a class="body_link" href="https://quotes.toscrape.com/">---Оригинальный источник---</a>
-      </div>
-    </div>
-  </div>
-</body>
-</html>
-"""
+    tr = soup.new_tag('tr')
 
+    td_author = soup.new_tag('td')
+    td_author.string = author
+    td_quote = soup.new_tag('td')
+    td_quote.string = quote
+
+    tr.append(td_author)
+    tr.append(td_quote)
+
+    tbody.append(tr)
 
 with open("index.html", "w", encoding="utf-8") as file:
-    file.write(html_markup)
+    file.write(str(soup))
