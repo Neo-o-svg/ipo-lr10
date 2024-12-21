@@ -31,7 +31,7 @@ with open("data.json", "w", encoding='utf-8') as file:
 with open("data.json", "r", encoding="utf-8") as file:
     data = json.load(file)
 
-with open("index.html", "r", encoding="utf-8") as file:
+with open("tamplate.html", "r", encoding="utf-8") as file:
     soup = BeautifulSoup(file, "html.parser")
 
 tbody = soup.find('tbody', class_='table_body')
@@ -51,3 +51,4 @@ for author, quote in data.items():
 
 with open("index.html", "w", encoding="utf-8") as file:
     file.write(str(soup))
+
